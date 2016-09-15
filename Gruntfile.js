@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
   var merge = require("merge");
 
-  var includes = ["**/*"];
+  var includes = ["**/*","!**/*.jade"];
 
   var config = {
     pkg: grunt.file.readJSON("package.json"),
@@ -49,6 +49,17 @@ module.exports = function(grunt) {
       }
     }
 });
+merge(config, {
+	jade: {
+		html: {
+			src: ["build/stage/*.jade"],
+			dest: "build/stage/",
+			options: {
+				client: false
+			}
+		}
+	}
+});
 //<humphrey:config:insert>//
 
   grunt.initConfig(config);
@@ -56,11 +67,12 @@ module.exports = function(grunt) {
   require("load-grunt-tasks")(grunt);
 
   grunt.registerTask("do-serve", ["build","express","open","watch"]);
+grunt.registerTask("do-jade", ["jade"]);
 //<humphrey:subtask:insert>//
 
   grunt.registerTask("do-setup", []);
   grunt.registerTask("do-validate", []);
-  grunt.registerTask("do-build", []);
+  grunt.registerTask("do-build", ["do-jade"]);
   grunt.registerTask("do-test", []);
   grunt.registerTask("do-package", []);
   grunt.registerTask("do-archive", []);
