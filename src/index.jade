@@ -11,12 +11,13 @@ html(lang='en')
     meta(name='description', content='Testing')
     meta(name='author', content='CodeEcho')
     
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cyborg/bootstrap.min.css')
     link(rel='stylesheet', href='css/styles.css?v=1.0')
     
     script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
+    
     script(src='js/scripts.js')
     
   body
@@ -24,19 +25,18 @@ html(lang='en')
     h1 Testing
     
     // Button trigger modal
-    button.btn.btn-primary.btn-lg(type='button', data-toggle='modal', data-target='#myModal')
-      | Launch demo modal
+    button.btn.btn-primary.btn-lg(type='button', onclick='openTerminal()')
+      | Launch
       
     // Modal
-    #myModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', data-backdrop='false')
+    #terminal.modal.fade(tabindex='-1', role='dialog', data-backdrop='false')
       .modal-dialog(role='document')
         .modal-content
           .modal-header
             button.close(type='button', data-dismiss='modal', aria-label='Close')
               span(aria-hidden='true') ×
-            h4#myModalLabel.modal-title Modal title
+            h4.modal-title 
           .modal-body
             | Testing
           .modal-footer
-            button.btn.btn-default(type='button', data-dismiss='modal') Close
-            button.btn.btn-primary(type='button') Save changes
+            input.commandLine(type='text')
