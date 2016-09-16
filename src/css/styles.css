@@ -2,6 +2,8 @@
     width: 600px;
     margin: 0 auto;
     bottom: auto;
+    right:auto;
+    left:auto;
 }
 
 .commandLine{
@@ -13,4 +15,19 @@
 
 .commandLine:focus{
     outline:none;
+}
+
+.map{
+    width:100%;
+}
+
+#terminal-button{
+    width:75px;
+    position:fixed;
+    bottom:10px;
+    right:10px;
+}
+
+#terminal-button img{
+    width:100%;
 }
