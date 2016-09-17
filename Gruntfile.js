@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
   var merge = require("merge");
 
-  var includes = ["**/*","!**/*.jade"];
+  var includes = ["**/*", "!**/*.jade", "!**/*.ts"];
 
   var config = {
     pkg: grunt.file.readJSON("package.json"),
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
   }
 
   merge(config, {
-	express: {
+    express: {
       all: {
         options: {
           port: 9000,
@@ -48,31 +48,40 @@ module.exports = function(grunt) {
         tasks: ['copy:stage', "do-setup", "do-validate", "do-build", "copy:publish"]
       }
     }
-});
-merge(config, {
-	jade: {
-		html: {
-			src: ["build/stage/*.jade"],
-			dest: "build/stage/",
-			options: {
-				client: false
-			}
-		}
-	}
-});
-//<humphrey:config:insert>//
+  });
+  merge(config, {
+    jade: {
+      html: {
+        src: ["build/stage/*.jade"],
+        dest: "build/stage/",
+        options: {
+          client: false
+        }
+      }
+    }
+  });
+  merge(config, {
+      ts: {
+        default: {
+          baseDir: 'build/stage',
+          src: ["build/stage/**/*.ts"]
+        }
+      }
+    })
+    //<humphrey:config:insert>//
 
   grunt.initConfig(config);
 
   require("load-grunt-tasks")(grunt);
 
-  grunt.registerTask("do-serve", ["build","express","open","watch"]);
-grunt.registerTask("do-jade", ["jade"]);
-//<humphrey:subtask:insert>//
+  grunt.registerTask("do-serve", ["build", "express", "open", "watch"]);
+  grunt.registerTask("do-jade", ["jade"]);
+  grunt.registerTask("do-ts", ["ts"]);
+  //<humphrey:subtask:insert>//
 
   grunt.registerTask("do-setup", []);
   grunt.registerTask("do-validate", []);
-  grunt.registerTask("do-build", ["do-jade"]);
+  grunt.registerTask("do-build", ["do-jade", "do-ts"]);
   grunt.registerTask("do-test", []);
   grunt.registerTask("do-package", []);
   grunt.registerTask("do-archive", []);
@@ -87,7 +96,7 @@ grunt.registerTask("do-jade", ["jade"]);
   grunt.registerTask("deploy", ["archive", "do-deploy"]);
 
   grunt.registerTask("serve", ["do-serve"]);
-//<humphrey:task:insert>//
+  //<humphrey:task:insert>//
 
   grunt.registerTask("default", ["test"]);
 

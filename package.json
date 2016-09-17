@@ -24,7 +24,9 @@
     "grunt-express": "^1.4.1",
     "grunt-jade": "^0.5.1",
     "grunt-open": "^0.2.3",
+    "grunt-ts": "^6.0.0-beta.3",
     "load-grunt-tasks": "^3.5.2",
-    "merge": "^1.2.0"
+    "merge": "^1.2.0",
+    "typescript": "^1.8.10"
   }
 }
