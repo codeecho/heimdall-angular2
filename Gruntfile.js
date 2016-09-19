@@ -61,10 +61,22 @@ module.exports = function(grunt) {
     }
   });
   merge(config, {
-      ts: {
-        default: {
-          baseDir: 'build/stage',
-          src: ["build/stage/**/*.ts"]
+    ts: {
+      default: {
+        tsconfig: true
+      }
+    }
+  })
+  merge(config, {
+      includes: {
+        files: {
+          src: ['**/*.js'], // Source files
+          dest: 'build/stage',
+          cwd: 'build/stage',
+          options: {
+            silent: true,
+            includePath: ['.']
+          }
         }
       }
     })
@@ -77,11 +89,12 @@ module.exports = function(grunt) {
   grunt.registerTask("do-serve", ["build", "express", "open", "watch"]);
   grunt.registerTask("do-jade", ["jade"]);
   grunt.registerTask("do-ts", ["ts"]);
+  grunt.registerTask("do-includes", ["includes"]);
   //<humphrey:subtask:insert>//
 
   grunt.registerTask("do-setup", []);
   grunt.registerTask("do-validate", []);
-  grunt.registerTask("do-build", ["do-jade", "do-ts"]);
+  grunt.registerTask("do-build", ["do-jade", "do-includes", "do-ts"]);
   grunt.registerTask("do-test", []);
   grunt.registerTask("do-package", []);
   grunt.registerTask("do-archive", []);
