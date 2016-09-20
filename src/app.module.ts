@@ -1,9 +1,10 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent }   from './app.component';
+import { HeimdallComponent }   from './heimdall.component';
+import { TerminalComponent }   from './terminal.component';
 @NgModule({
   imports:      [ BrowserModule ],
-  declarations: [ AppComponent ],
-  bootstrap:    [ AppComponent ]
+  declarations: [ HeimdallComponent, TerminalComponent ],
+  bootstrap:    [ HeimdallComponent ]
 })
 export class AppModule { }

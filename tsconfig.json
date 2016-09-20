@@ -10,7 +10,7 @@
     "noImplicitAny": false
   },
   "files": [
-    "build/stage/app.component.ts",
+    "build/stage/heimdall.component.ts",
     "build/stage/app.module.ts",
     "build/stage/main.ts"
   ]

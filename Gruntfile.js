@@ -50,10 +50,15 @@ module.exports = function(grunt) {
     }
   });
   merge(config, {
-    jade: {
+    pug: {
       html: {
-        src: ["build/stage/*.jade"],
-        dest: "build/stage/",
+        files: [{
+          cwd: "build/stage",
+          src: "**/*.jade",
+          dest: "build/stage",
+          expand: true,
+          ext: ".html"
+        }],
         options: {
           client: false
         }
@@ -87,14 +92,14 @@ module.exports = function(grunt) {
   require("load-grunt-tasks")(grunt);
 
   grunt.registerTask("do-serve", ["build", "express", "open", "watch"]);
-  grunt.registerTask("do-jade", ["jade"]);
+  grunt.registerTask("do-pug", ["pug"]);
   grunt.registerTask("do-ts", ["ts"]);
   grunt.registerTask("do-includes", ["includes"]);
   //<humphrey:subtask:insert>//
 
   grunt.registerTask("do-setup", []);
   grunt.registerTask("do-validate", []);
-  grunt.registerTask("do-build", ["do-jade", "do-includes", "do-ts"]);
+  grunt.registerTask("do-build", ["do-pug", "do-includes", "do-ts"]);
   grunt.registerTask("do-test", []);
   grunt.registerTask("do-package", []);
   grunt.registerTask("do-archive", []);
