@@ -1,4 +1,4 @@
-.modal-open .modal {
+.modal {
     width: 600px;
     margin: 0 auto;
     bottom: auto;
@@ -30,4 +30,8 @@
 
 #terminal-button img{
     width:100%;
+}
+
+.modal.in{
+    display:block;
 }
