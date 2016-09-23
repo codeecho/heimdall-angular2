@@ -1,3 +1,5 @@
+.alm
 app
 build
 .tscache
+node_modules

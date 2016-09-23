@@ -1,17 +1,26 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "emitDecoratorMetadata": true,
+    "isolatedModules": false,
+    "jsx": "react",
     "experimentalDecorators": true,
-    "removeComments": false,
-    "noImplicitAny": false
+    "emitDecoratorMetadata": true,
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "preserveConstEnums": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "outDir": "app"
   },
-  "files": [
-    "build/stage/heimdall.component.ts",
-    "build/stage/app.module.ts",
-    "build/stage/main.ts"
+  "compileOnSave": true,
+  "exclude": [
+    "node_modules",
+    "typings/browser",
+    "typings/browser.d.ts",
+    "build",
+    "app"
   ]
 }

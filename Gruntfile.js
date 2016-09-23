@@ -32,7 +32,7 @@ module.exports = function(grunt) {
       all: {
         options: {
           port: 9000,
-          bases: ["app"],
+          bases: ["app", "node_modules"],
           livereload: true
         }
       }
@@ -43,9 +43,13 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      src: {
+      all: {
         files: ['src/**/*', 'bower_components/**/*'],
         tasks: ['copy:stage', "do-setup", "do-validate", "do-build", "copy:publish"]
+      },
+      nots:{
+        files: ['src/**/*', 'bower_components/**/*', "!src/**/*.ts"],
+        tasks: ['copy:stage', "do-setup", "do-validate", "do-build-without-ts", "copy:publish"]
       }
     }
   });
@@ -91,7 +95,8 @@ module.exports = function(grunt) {
 
   require("load-grunt-tasks")(grunt);
 
-  grunt.registerTask("do-serve", ["build", "express", "open", "watch"]);
+  grunt.registerTask("do-serve-without-ts", ["build", "express", "open", "watch:nots"]);
+  grunt.registerTask("do-serve", ["build", "express", "open", "watch:all"]);
   grunt.registerTask("do-pug", ["pug"]);
   grunt.registerTask("do-ts", ["ts"]);
   grunt.registerTask("do-includes", ["includes"]);
@@ -99,7 +104,8 @@ module.exports = function(grunt) {
 
   grunt.registerTask("do-setup", []);
   grunt.registerTask("do-validate", []);
-  grunt.registerTask("do-build", ["do-pug", "do-includes", "do-ts"]);
+  grunt.registerTask("do-build-without-ts", ["do-pug", "do-includes"]);
+  grunt.registerTask("do-build", ["do-build-without-ts", "do-ts"]);
   grunt.registerTask("do-test", []);
   grunt.registerTask("do-package", []);
   grunt.registerTask("do-archive", []);
@@ -108,12 +114,14 @@ module.exports = function(grunt) {
   grunt.registerTask("setup", ["clean", "copy:stage", "do-setup"]);
   grunt.registerTask("validate", ["setup", "do-validate"]);
   grunt.registerTask("build", ["validate", "do-build", "copy:publish"]);
+  grunt.registerTask("build-without-ts", ["validate", "do-build-without-ts", "copy:publish"]);
   grunt.registerTask("test", ["build", "do-test"]);
   grunt.registerTask("package", ["test", "do-package"]);
   grunt.registerTask("archive", ["package", "do-archive"]);
   grunt.registerTask("deploy", ["archive", "do-deploy"]);
 
   grunt.registerTask("serve", ["do-serve"]);
+  grunt.registerTask("serve-without-ts", ["do-serve-without-ts"]);
   //<humphrey:task:insert>//
 
   grunt.registerTask("default", ["test"]);

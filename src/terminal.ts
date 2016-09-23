@@ -1,17 +1,22 @@
 export class Terminal{
-    id: number;
-    isOpen: boolean;
+    private id: number;
+    private _isOpen: boolean;
     
     constructor(id: number){
         this.id = id;
-        this.isOpen = false;
+        this._isOpen = false;
     }
     
     open(): void{
-        this.isOpen = true;
+        this._isOpen = true;
     }
     
     close(): void{
-        this.isOpen = false;
+        this._isOpen = false;
     }
+
+	get isOpen(): boolean {
+		return this._isOpen;
+	}
+
 }
