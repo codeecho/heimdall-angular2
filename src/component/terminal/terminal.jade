@@ -1,0 +1,12 @@
+div.terminal.modal((click)='activate()', [ngClass]='{in: terminal.isOpen}', tabindex='-1', role='dialog', data-backdrop='false')
+    .modal-dialog(role='document')
+      .modal-content
+        .modal-header Terminal {{terminal.shell.id}}
+          button.close(type='button', data-dismiss='modal', aria-label='Close', (click)='close()')
+            span(aria-hidden='true') ×
+          h4.modal-title 
+        .modal-body
+          div.terminal-window
+            //img.map(src='http://geoawesomeness.com/wp-content/uploads/2015/03/lead_large.jpg')
+        .modal-footer
+          shell([shell] = 'terminal.shell')

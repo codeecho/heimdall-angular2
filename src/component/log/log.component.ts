@@ -3,7 +3,7 @@ import { Log } from './log';
 
 @Component({
     selector: 'log',
-    templateUrl: 'log.html'
+    templateUrl: 'component/log/log.html'
 })
 export class LogComponent{
     @Input()

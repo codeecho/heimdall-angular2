@@ -1,13 +1,21 @@
+body{
+    font-family: 'Source Code Pro';
+}
+
 .modal {
     width: 600px;
-    margin: 0 auto;
-    bottom: auto;
-    right:auto;
-    left:auto;
+    left:20%;
+}
+
+.terminal .modal-footer label{
+    float:left;
+    padding-right:5px;
+    color:green;
 }
 
 .commandLine{
-    width:100%;
+    float:left;
+    width:550px;
     color:white;
     background-color:inherit;
     border:none;
@@ -34,4 +42,47 @@
 
 .modal.in{
     display:block;
+}
+
+#log{
+    padding:2em;
+}
+
+#log p{
+    margin:0px;
+    color:#00fe00;
+}
+
+.modal-header, .modal-footer{
+    padding:5px
+}
+
+ .shell-panel {
+      height: 200px;
+      width: 100%;
+      color: #00fe00;
+      padding: 20px 20px 20px 20px;
+      overflow: scroll;
+      overflow-x: hidden;
+      overflow-y: hidden;
+}
+
+.shell-cli .prompt {
+      font-weight: bold;
+}
+
+.terminal .modal-footer{
+    text-align:left;
+}
+
+.terminal{
+    z-index:998;
+}
+
+.terminal.active{
+    z-index:999;
+}
+
+.terminal .modal-content{
+    border-radius:0px;
 }

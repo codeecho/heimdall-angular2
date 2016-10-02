@@ -3,3 +3,9 @@ app
 build
 .tscache
 node_modules
+bower_components
+.vscode
+
+
+
+
