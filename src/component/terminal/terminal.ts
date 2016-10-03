@@ -3,14 +3,15 @@ import {Shell} from './shell';
 declare var activateTerminal: any;
 
 export class Terminal{
-    private _shell: Shell;
+    private _id: number;
+    private _onActivate: () => void;
 
     private _isOpen: boolean;
 
     command: string;
     
-    constructor(shell: Shell){
-        this._shell = shell;
+    constructor(id: number){
+        this._id = id;
         this._isOpen = false;
     }
     
@@ -23,16 +24,22 @@ export class Terminal{
         this._isOpen = false;
     }
 
-    activate(): void{
-        this._shell.activate();
+    public activate(): void{
+        if(this._onActivate){
+            this._onActivate();
+        }
+    }
+
+    public onActivate(_onActivate: () => void): void{
+        this._onActivate = _onActivate;
     }
 
 	get isOpen(): boolean {
 		return this._isOpen;
     }
 
-	public get shell(): Shell {
-		return this._shell;
+	public get id(): number {
+		return this._id;
 	}
 
 }

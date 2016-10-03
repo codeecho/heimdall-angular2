@@ -1,6 +1,5 @@
 import { Component, AfterViewInit} from '@angular/core';
 import { Terminal } from '../terminal/terminal';
-import {Shell} from '../terminal/shell';
 import { Log } from '../log/log';
 
 declare var initTerminals: any;
@@ -18,7 +17,7 @@ export class HeimdallComponent implements AfterViewInit{
 
 	constructor() {
     this.log = new Log();
-    this.terminals = [new Terminal(new Shell(1)), new Terminal(new Shell(2))];
+    this.terminals = [new Terminal(1), new Terminal(2), new Terminal(3), new Terminal(4), new Terminal(5)];
 	}
   
   ngAfterViewInit(){

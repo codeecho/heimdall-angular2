@@ -1,7 +1,7 @@
-div.terminal.modal((click)='activate()', [ngClass]='{in: terminal.isOpen}', tabindex='-1', role='dialog', data-backdrop='false')
+div.terminal.modal([attr.terminalId]='terminal.id', (click)='activate()', [ngClass]='{in: terminal.isOpen}', tabindex='-1', role='dialog', data-backdrop='false')
     .modal-dialog(role='document')
       .modal-content
-        .modal-header Terminal {{terminal.shell.id}}
+        .modal-header Terminal {{terminal.id}}
           button.close(type='button', data-dismiss='modal', aria-label='Close', (click)='close()')
             span(aria-hidden='true') ×
           h4.modal-title 
@@ -9,4 +9,17 @@ div.terminal.modal((click)='activate()', [ngClass]='{in: terminal.isOpen}', tabi
           div.terminal-window
             //img.map(src='http://geoawesomeness.com/wp-content/uploads/2015/03/lead_large.jpg')
         .modal-footer
-          shell([shell] = 'terminal.shell')
+          div.shell-panel(id='shell-panel{{terminal.id}}')
+            div
+                | Type 
+                code help
+                |  or hit 
+                code TAB
+                |  for a list of commands.
+            div.shell-view(id='shell-view{{terminal.id}}')
+                div.shell-cli(id='shell-cli{{terminal.id}}')
+                    span.prompt [1] $
+                    span.input
+                        span.left
+                        span.cursor  
+                        span.right

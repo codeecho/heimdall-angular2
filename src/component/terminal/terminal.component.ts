@@ -1,7 +1,7 @@
 import { Component, Input, Inject, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { Terminal } from './terminal';
 import { Log } from '../log/log';
-import {ShellComponent} from './shell.component';
+import {Shell} from './shell';
 
 @Component({
   selector: 'terminal',
@@ -13,8 +13,8 @@ export class TerminalComponent extends AfterViewInit{
   terminal: Terminal;
   @Input()
   log: Log;
-  @ViewChild(ShellComponent) shellComponent: ShellComponent;
   private _el: HTMLElement;
+  private _shell: Shell;
 
   constructor(@Inject(ElementRef) elementRef: ElementRef) {
     super();
@@ -22,12 +22,22 @@ export class TerminalComponent extends AfterViewInit{
 	}
 
   ngAfterViewInit(): void{
+    this._shell = new Shell(this.terminal.id);
 
+    var terminalComponent: TerminalComponent = this;
+    this._shell.addCommandHandler("exit", function(cmd, args, callback){
+            console.log(this);
+            terminalComponent.close();
+    });
+
+    this.terminal.onActivate(() => {
+      this._shell.activate();
+    })
   }
 
   activate(): void{
     console.log("Activate terminal");
-    this.shellComponent.activate();
+    this._shell.activate();
     $(".terminal").removeClass("active");
     $(this._el).find('.terminal').addClass("active");
   }
