@@ -6,6 +6,7 @@ export class Directory extends DiskItem{
 
 	constructor(name: string, parent?: Directory) {
 		super(name, parent);
+		this._children = [];
 	}
 
 	public get children(): DiskItem[] {

@@ -24,5 +24,16 @@ export class DiskItem{
 	public set name(value: string) {
 		this._name = value;
 	}
+
+	public get path(): string{
+		if(this.isRoot()){
+			return '/' + this.name;
+		}
+		return this.parent.path + '/' + this.name;
+	}
+
+	public isRoot(): boolean{
+		return this._parent == null;
+	}
     
 }
