@@ -86,3 +86,31 @@ body{
 .terminal .modal-content{
     border-radius:0px;
 }
+
+.disk-item{
+    display:inline-block;
+    font-size:0.9em;
+    text-align:center;
+    padding:5px;
+    color:white;
+}
+
+.disk-item-icon{
+    width:80px;
+    margin:0 auto;
+    height:80px;
+    background-size: 80px 80px;
+    background-repeat: no-repeat;
+}
+
+.disk-item-icon.Directory{
+    background-image:url("../icons/folder.png");
+}
+
+.disk-item-icon.File, .disk-item-icon.TextFile{
+    background-image:url("../icons/file.png");
+}
+
+.terminal-window{
+    height:350px;
+}

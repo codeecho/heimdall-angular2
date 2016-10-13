@@ -10,8 +10,16 @@ export class Connection{
         this._currentDirectory = device.rootDirectory;
 	}
 
+	public get device(): Device {
+		return this._device;
+	}
+
 	public get currentDirectory(): Directory {
 		return this._currentDirectory;
+	}
+
+	public set currentDirectory(value: Directory) {
+		this._currentDirectory = value;
 	}
 
 }

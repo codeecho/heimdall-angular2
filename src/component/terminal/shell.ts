@@ -1,4 +1,5 @@
 import {Directory} from '../../model/device/directory';
+import {File} from '../../model/device/file';
 
 declare var Josh: any;
 declare var _: any;
@@ -10,9 +11,16 @@ export class Shell{
     private joshShell: any;
     private joshPathHandler: any;
 
+    private templates: any;
+
+    private _onOpenFile: (file: File) => void;
+
 	constructor(id: number) {
 		this._id = id;
         this.init();
+        this.templates = {};
+        this.templates.not_found = _.template("<div><%=cmd%>: <%=path%>: No such file or directory</div>");
+        this.templates.is_a_directory = _.template("<div><%=cmd%>: <%=path%> is a directory</div>");
 	}
 
     private init(): void{
@@ -22,23 +30,6 @@ export class Shell{
         this.joshShell.onNewPrompt(function(callback) {
             promptCounter++;
             callback("[" + promptCounter + "] $");
-        });
-        this.joshShell.setCommandHandler("hello", {
-            exec: function(cmd, args, callback) {
-                var arg = args[0] || '';
-                var response = "who is this " + arg + " you are talking to?";
-                if(arg === 'josh') {
-                response = 'pleased to meet you.';
-                } else if(arg === 'world') {
-                response = 'world says hi.'
-                } else if(!arg) {
-                response = 'who are you saying hello to?';
-                }
-                callback(response);
-            },
-            completion: function(cmd, arg, line, callback) {
-                callback(this.joshShell.bestMatch(arg, ['world', 'josh']))
-            }
         });
         this.joshPathHandler = new Josh.PathHandler(this.joshShell);
         this.joshPathHandler.current = this._rootDirectory;
@@ -75,6 +66,24 @@ export class Shell{
             }
             return findNode(current, _.rest(parts), callback);
         }
+        this.joshShell.setCommandHandler("open", {
+            exec: (cmd, args, callback) => {
+                this.joshPathHandler.getNode(args[0], (node) => {
+                    if(!node) {
+                        return callback(this.templates.not_found({cmd: 'open', path: args[0]}));
+                    }
+                    this.joshPathHandler.isDirectory(node, (isDirectory) => {
+                        if(!isDirectory){
+                            this._onOpenFile(node);
+                            return callback();
+                        }else{
+                            return callback(this.templates.is_a_directory({cmd: 'open', path: args[0]}));
+                        }
+                    });
+                });
+            },
+            completion: this.joshPathHandler.pathCompletionHandler
+        });
     }
 
     public addCommandHandler(alias: string, handler: (cmd: string, args: string[], callback: any) => void): void{
@@ -83,8 +92,23 @@ export class Shell{
         });
     }
 
+    public addPathCommandHandler(alias: string, handler: (cmd: string, args: string[], callback: any) => void): void{
+        this.joshShell.setCommandHandler(alias, {
+            exec: handler,
+            completion: this.joshPathHandler.pathCompletionHandler
+        })
+    }
+
     public activate(): void{
         this.joshShell.activate();
+    }
+
+    public onChangeDirectory(callback: (directory: Directory) => void): void{
+        this.joshPathHandler.onChangeDirectory = callback;
+    }
+
+    public onOpenFile(callback: (file: File) => void): void{
+        this._onOpenFile = callback;
     }
 
 	public set rootDirectory(value: Directory) {

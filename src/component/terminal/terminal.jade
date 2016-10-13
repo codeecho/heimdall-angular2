@@ -1,13 +1,18 @@
 div.terminal.modal([attr.terminalId]='terminal.id', (click)='activate()', [ngClass]='{in: terminal.isOpen}', tabindex='-1', role='dialog', data-backdrop='false')
     .modal-dialog(role='document')
       .modal-content
-        .modal-header Terminal {{terminal.id}}
+        .modal-header Terminal {{terminal.id}} {{connection.device.name}}
           button.close(type='button', data-dismiss='modal', aria-label='Close', (click)='close()')
             span(aria-hidden='true') ×
           h4.modal-title 
         .modal-body
           div.terminal-window
-            //img.map(src='http://geoawesomeness.com/wp-content/uploads/2015/03/lead_large.jpg')
+            div.explorer(*ngIf='isExplorerTabActive()')
+              div.disk-item(*ngFor='let diskItem of connection.currentDirectory.children')
+                div(class='disk-item-icon {{diskItem.constructor.name}}')
+                span.disk-item-name {{diskItem.name}}  
+            div.file-viewer(*ngIf='isFileTabActive()')
+              div.file-content {{openFile.content}}
         .modal-footer
           div.shell-panel(id='shell-panel{{terminal.id}}')
             div

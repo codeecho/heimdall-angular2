@@ -1,6 +1,7 @@
 import {Computer} from '../model/device/computer';
 import {Directory} from '../model/device/directory';
 import {File} from '../model/device/file';
+import {TextFile} from '../model/device/text_file';
 
 export class Demo{
     private _localhost: Computer;
@@ -11,7 +12,7 @@ export class Demo{
 		rootDirectory.addChild(dir1);
 		var dir2: Directory = new Directory('dir2', rootDirectory);
 		rootDirectory.addChild(dir2);
-		var file1: File = new File('file1.txt', rootDirectory);
+		var file1: File = new TextFile('file1.txt', 'This is a test', rootDirectory);
 		rootDirectory.addChild(file1);
 		var dir3: Directory = new Directory('dir3', dir1);
 		dir1.addChild(dir3);

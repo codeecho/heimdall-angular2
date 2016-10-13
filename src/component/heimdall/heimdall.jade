@@ -6,5 +6,5 @@ div
   div#log
     log("[log]"='log')
 
-  div#terminals(*ngFor='let terminal of terminals')
-    terminal("[terminal]"='terminal', "[log]"='log')
+  div#terminals
+    terminal(*ngFor='let terminal of terminals', "[terminal]"='terminal', "[log]"='log')
