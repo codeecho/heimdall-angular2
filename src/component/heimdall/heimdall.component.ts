@@ -1,6 +1,8 @@
 import { Component, AfterViewInit} from '@angular/core';
 import { Terminal } from '../terminal/terminal';
 import { Log } from '../log/log';
+import {Demo} from '../../demo/demo';
+import {Network} from '../../model/network';
 
 declare var initTerminals: any;
 
@@ -13,11 +15,13 @@ export class HeimdallComponent implements AfterViewInit{
   
   terminals: Terminal[]
   log: Log = new Log();
+  network: Network;
 
 
 	constructor() {
     this.log = new Log();
     this.terminals = [new Terminal(1), new Terminal(2), new Terminal(3), new Terminal(4), new Terminal(5)];
+    this.network = new Demo().network;
 	}
   
   ngAfterViewInit(){
@@ -35,7 +39,9 @@ export class HeimdallComponent implements AfterViewInit{
     this.log.debug("Running diagnostics...");
     this.log.debug("System secure");
 
-    this.openTerminal();
+    setTimeout(() => {
+      this.openTerminal();
+    }, 1);
   }
   
   openTerminal(): void {

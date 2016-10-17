@@ -6,11 +6,13 @@ import {Device} from '../../model/device/device';
 import {Directory} from '../../model/device/directory';
 import {File} from '../../model/device/file';
 import {Connection} from '../../model/device/connection';
-import {Demo} from '../../demo/demo';
+import {Network} from '../../model/Network';
+import {Location} from '../../model/Location';
 
 const enum Tab{
   Explorer,
-  File
+  File,
+  Map
 } 
 
 @Component({
@@ -23,27 +25,27 @@ export class TerminalComponent extends AfterViewInit{
   terminal: Terminal;
   @Input()
   log: Log;
+  @Input()
+  network: Network;
+
   connection: Connection;
 
   private _el: HTMLElement;
   private _zone: NgZone;
   private _shell: Shell;
-  private _demo: Demo;
-  private _localhost: Device;
 
-  activeTab: Tab = Tab.Explorer;
+  activeTab: Tab;
   openFile: File;
+  selectedLocation: Location;
 
   constructor(@Inject(ElementRef) elementRef: ElementRef, @Inject(NgZone) zone: NgZone) {
     super();
     this._el = elementRef.nativeElement;
     this._zone = zone;
-    this._demo = new Demo();
-    this._localhost = this._demo.localhost;
-    this.connection = new Connection(this._localhost);
 	}
 
   ngAfterViewInit(): void{
+
     this._shell = new Shell(this.terminal.id);
 
     var terminalComponent: TerminalComponent = this;
@@ -60,6 +62,39 @@ export class TerminalComponent extends AfterViewInit{
       });
     });
 
+    this._shell.addCommandHandler("connect", (cmd, args, callback) => {
+      this._zone.run(() => {
+        if(args.length != 1 || args[0] == null){
+          return callback();
+        }
+        var ipAddress = args[0];
+        var device = this.network.getDevice(ipAddress);
+        if(device == null){
+          return callback();
+        }
+        this.connection = new Connection(device);
+        this._shell.rootDirectory = this.connection.currentDirectory;
+        this.activeTab = Tab.Explorer;
+        callback();
+      });
+    });
+
+    this._shell.addCommandHandler("disconnect", (cmd, args, callback) => {
+      this._zone.run(() => {
+        this.connection = new Connection(this.network.localhost);
+        this._shell.rootDirectory = this.connection.currentDirectory;
+        this.activeTab = Tab.Explorer;
+        callback();
+      });
+    });
+
+    this._shell.addCommandHandler("locate-address", (cmd, args, callback) => {
+      this._zone.run(() => {
+        this.selectedLocation = this.connection.device.location;
+        this.activeTab = Tab.Map;
+      });
+    });
+
     this._shell.onChangeDirectory((directory: Directory) => {
       this._zone.run(() => {
         this.activeTab = Tab.Explorer;
@@ -73,6 +108,12 @@ export class TerminalComponent extends AfterViewInit{
       this.openFile = file;
     })
 
+    this.terminal.onOpen(() => {
+      this.connection = new Connection(this.network.localhost);
+      this._shell.rootDirectory = this.connection.currentDirectory;
+      this.activeTab = Tab.Explorer;
+    });
+
     this.terminal.onActivate(() => {
       this.activate();
     });
@@ -80,9 +121,6 @@ export class TerminalComponent extends AfterViewInit{
   }
 
   activate(): void{
-    this.connection = new Connection(this._localhost);
-    this.activeTab = Tab.Explorer;
-    this._shell.rootDirectory = this.connection.currentDirectory;
     this._shell.activate();
     $(".terminal").removeClass("active");
     $(this._el).find('.terminal').addClass("active");
@@ -91,6 +129,9 @@ export class TerminalComponent extends AfterViewInit{
   close(): void{
     this.log.debug("Terminating terminal...");
     this.terminal.close();
+    this.connection = new Connection(this.network.localhost);
+    this.activeTab = Tab.Explorer;
+    this._shell.rootDirectory = this.connection.currentDirectory;
     this.log.debug("Terminal shutdown successfully");
   }
 
@@ -100,6 +141,10 @@ export class TerminalComponent extends AfterViewInit{
 
   isFileTabActive(): boolean{
     return this.isTabActive(Tab.File);
+  }
+
+  isMapTabActive(): boolean{
+    return this.isTabActive(Tab.Map);
   }
 
   isTabActive(tab: Tab){

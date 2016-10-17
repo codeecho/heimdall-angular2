@@ -114,3 +114,12 @@ body{
 .terminal-window{
     height:350px;
 }
+
+.file-viewer{
+    color: #00fe00;
+}
+
+div.map{
+    background-image:url("../demo/map.png");
+    height: 350px;
+}

@@ -4,6 +4,7 @@ declare var activateTerminal: any;
 
 export class Terminal{
     private _id: number;
+    private _onOpen: () => void;
     private _onActivate: () => void;
 
     private _isOpen: boolean;
@@ -17,6 +18,9 @@ export class Terminal{
     
     open(): void{
         this._isOpen = true;
+        if(this._onOpen){
+            this._onOpen();
+        }
         this.activate();
     }
     
@@ -32,6 +36,10 @@ export class Terminal{
 
     public onActivate(_onActivate: () => void): void{
         this._onActivate = _onActivate;
+    }
+
+    public onOpen(_onOpen: () => void): void{
+        this._onOpen = _onOpen;
     }
 
 	get isOpen(): boolean {
