@@ -1,5 +1,6 @@
 import {Directory} from '../../model/device/directory';
 import {File} from '../../model/device/file';
+import {MailBox} from '../../model/device/mail_box';
 
 declare var Josh: any;
 declare var _: any;
@@ -21,6 +22,7 @@ export class Shell{
         this.templates = {};
         this.templates.not_found = _.template("<div><%=cmd%>: <%=path%>: No such file or directory</div>");
         this.templates.is_a_directory = _.template("<div><%=cmd%>: <%=path%> is a directory</div>");
+        this.templates.general_error = _.template("<div><%=cmd%>: <%=message%></div>");
 	}
 
     private init(): void{
@@ -88,7 +90,21 @@ export class Shell{
 
     public addCommandHandler(alias: string, handler: (cmd: string, args: string[], callback: any) => void): void{
         this.joshShell.setCommandHandler(alias, {
-            exec: handler
+            exec: (cmd, args, callback) => {
+                console.log("exec");
+                handler(cmd, args, (err, message) => {
+                    console.log("handler");
+                    console.log(err);
+                    console.log(message);
+                    if(err){
+                        console.log("is err");
+                        return callback(this.templates.general_error({cmd: cmd, message: err}));
+                    }else{
+                        console.log("ok");
+                        return callback(message);
+                    }
+                })
+            }
         });
     }
 

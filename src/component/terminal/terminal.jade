@@ -6,15 +6,37 @@ div.terminal.modal([attr.terminalId]='terminal.id', (click)='activate()', [ngCla
             span(aria-hidden='true') ×
           h4.modal-title 
         .modal-body
+          div.loading-mask([hidden]='!isLoading')
+          div.loading-image([hidden]='!isLoading')
           div.terminal-window
             div.explorer(*ngIf='isExplorerTabActive()')
               div.disk-item(*ngFor='let diskItem of connection.currentDirectory.children')
                 div(class='disk-item-icon {{diskItem.constructor.name}}')
-                span.disk-item-name {{diskItem.name}}  
-            div.file-viewer(*ngIf='isFileTabActive()')
-              div.file-content {{openFile.content}}
+                span.disk-item-name {{diskItem.name}} 
+            div.mailbox(*ngIf='isMailBoxTabActive()')
+              table.table.table-striped
+                tr(*ngFor='let conversation of connection.currentDirectory.children')
+                  td.conversation-time {{conversation.lastMessageTime | date: 'dd MMM HH:mm'}}
+                  td.conversation-name {{conversation.name}}
+            div.database(*ngIf='isDatabaseTabActive()')
+              table.table.table-striped 
+                thead
+                  tr
+                    th(*ngFor='let field of connection.currentDirectory.fields') {{field}} 
+                tbody
+                  tr(*ngFor='let dbRecord of connection.currentDirectory.filteredRecords')
+                    td(*ngFor='let field of dbRecord.fields') {{field}}
+            include file-viewer.jade
             div.map-view(*ngIf='isMapTabActive()')
               div.map([ngStyle]="{'background-position': '-' + selectedLocation.coordinates.longtitude + 'px -' + selectedLocation.coordinates.latitude + 'px'}")
+                div.map-pointer
+                div.location-description.well
+                  p {{selectedLocation.description}}
+                  p {{selectedLocation.number}} {{selectedLocation.street}}
+                  p {{selectedLocation.postalCode}}
+                div.location-devices.well(*ngIf='identifiedDevices')
+                  p.title Devices in Range
+                  p(*ngFor='let identifiedDevice of identifiedDevices') {{identifiedDevice.ipAddress}} {{identifiedDevice.name}} 
         .modal-footer
           div.shell-panel(id='shell-panel{{terminal.id}}')
             div

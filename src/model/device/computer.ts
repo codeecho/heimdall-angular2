@@ -4,8 +4,8 @@ import {Location} from '../location';
 
 export class Computer extends Device{
 
-	constructor(name: string, rootDirectory: Directory, location: Location) {
-		super(name, rootDirectory, location);
+	constructor(name: string, ipAddress:string, rootDirectory: Directory, location: Location) {
+		super(name, ipAddress, rootDirectory, location);
 	}
     
 }

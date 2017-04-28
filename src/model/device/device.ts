@@ -7,10 +7,9 @@ export class Device{
     private _rootDirectory: Directory;
 	private _location: Location;
 
-	constructor(name: string, rootDirectory: Directory, location: Location) {
+	constructor(name: string, ipAddress: string, rootDirectory: Directory, location: Location) {
 		this._name = name;
-		this._ipAddress = this.generateIpAddress();
-		console.log(this.name + ": " + this._ipAddress);
+		this._ipAddress = ipAddress;
 		this._rootDirectory = rootDirectory;
 		this._location = location;
 	}
@@ -29,14 +28,6 @@ export class Device{
 
 	public get location(): Location {
 		return this._location;
-	}
-	
-	private generateIpAddress(): string{
-		return this.generateIpAddressPart() + "." + this.generateIpAddressPart() + "." + this.generateIpAddressPart() + "." + this.generateIpAddressPart();
-	}
-
-	private generateIpAddressPart(): string{
-		return Math.ceil(Math.random()*255).toString();
 	}
     
 }

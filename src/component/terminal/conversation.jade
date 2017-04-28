@@ -1,0 +1,5 @@
+div.conversation(*ngIf='isConversation()')
+    div.well.message(*ngFor='let message of openFile.messages')
+        span.message-author {{message.author.firstName}}
+        span.message-text {{message.text}}
+        span.message-time {{message.time | date: 'dd MMM HH mm'}}
